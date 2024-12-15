@@ -1,17 +1,15 @@
 {
   "name": "gptsclone",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "pnpm --filter '**' run dev",
+    "test": "pnpm --filter '**' run test",
+    "lint": "pnpm --filter '**' run lint",
+    "install": "pnpm install"
   },
-  "devDependencies": {
-    "vite": "^6.0.1"
-  },
-  "dependencies": {
-    "bootstrap": "5.3.3"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
