@@ -7,6 +7,8 @@ document.querySelector('#app').innerHTML = `
       <div class="card-body">
         <form>
   <div class="mb-3">
+    <label for="response" class="form-label" id="response"></label>
+
     <label for="prompt" class="form-label">Prompt</label>
     <input type="text" class="form-control" id="prompt-agent" aria-describedby="prompt-agent">
   </div>
@@ -24,12 +26,12 @@ document.querySelector('#app').innerHTML = `
     <input type="text" class="form-control" id="nombre" aria-describedby="nombre">
   </div>
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <label for="project" class="form-label">Project name</label>
+    <input type="text" class="form-control" id="project" aria-describedby="project">
   </div>
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <label for="description" class="form-label">Description project</label>
+    <input type="text" class="form-control" id="description" aria-describedby="description">
   </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -43,5 +45,3 @@ document.querySelector('#app').innerHTML = `
   </div>
 </div>
 `
-
-setupCounter(document.querySelector('#counter'))
