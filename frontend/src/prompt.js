@@ -41,10 +41,29 @@ export function renderPromptForm(container) {
 
       // Mostrar la respuesta
       const data = await response.json();
-      responseElement.innerText = `Respuesta: ${data.response}`;
+
+      responseElement.innerText = 'Datos extraídos correctamente. Rellenando formulario...';
+
+      // Rellenar automáticamente los campos del formulario
+      rellenarFormulario(data.response);
     } catch (error) {
       console.error('Error:', error.message);
       responseElement.innerText = 'Error al obtener la respuesta. Inténtalo de nuevo.';
     }
   });
+}
+
+// Función para rellenar el formulario automáticamente
+function rellenarFormulario(data) {
+  // Busca los campos del formulario por sus IDs
+  const nombreInput = document.querySelector('#nombre');
+  const projectInput = document.querySelector('#project');
+  const descriptionInput = document.querySelector('#description');
+  const emailInput = document.querySelector('#exampleInputEmail1');
+
+  // Rellena los campos si los datos están disponibles
+  if (data.nombre) nombreInput.value = data.nombre;
+  if (data.project) projectInput.value = data.project;
+  if (data.description) descriptionInput.value = data.description;
+  if (data.email) emailInput.value = data.email;
 }
