@@ -66,8 +66,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
   │   └── package.json    # Dependencias del backend
   │
   ├── frontend
-  │   ├── public
-  │   │   └── index.html  # Página principal
+  │   ├── index.html      # Página principal
   │   ├── src
   │   │   ├── main.js     # Punto de entrada del frontend
   │   │   ├── prompt.js   # Lógica de interacción con el modelo
@@ -77,6 +76,5 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
   │
   ├── pnpm-workspace.yaml # Configuración de pnpm workspace
   └── readme.md           # Documentación
-
     
 ```
