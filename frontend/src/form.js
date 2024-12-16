@@ -20,7 +20,7 @@ export function renderProjectForm(container) {
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Grabar</button>
         </form>
         <p id="submission-result" class="mt-3"></p>
       </div>
