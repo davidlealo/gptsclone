@@ -53,12 +53,21 @@ app.post('/api/mistral', async (req, res) => {
 
 // Función de extracción de datos del prompt
 function extractFormDataFromPrompt(prompt) {
-  return {
-    nombre: prompt.includes('nombre') ? 'John Doe' : '',
-    project: prompt.includes('proyecto') ? 'Proyecto AI' : '',
-    description: prompt.includes('descripción') ? 'Descripción automática' : '',
-    email: prompt.includes('correo') ? 'john.doe@example.com' : '',
-  };
+  const extractedData = {};
+
+  // Buscar patrones específicos usando expresiones regulares
+  const nombreMatch = prompt.match(/(me llamo|nombre es)\s+([\w\s]+)/i);
+  const projectMatch = prompt.match(/(proyecto es|proyecto)\s+([\w\s]+)/i);
+  const descriptionMatch = prompt.match(/(descripción es|descripción)\s+([\w\s]+)/i);
+  const emailMatch = prompt.match(/(correo es|email es)\s+([\w\.\-]+@[a-zA-Z]+\.[a-zA-Z]+)/i);
+
+  // Asignar los valores encontrados
+  extractedData.nombre = nombreMatch ? nombreMatch[2].trim() : '';
+  extractedData.project = projectMatch ? projectMatch[2].trim() : '';
+  extractedData.description = descriptionMatch ? descriptionMatch[2].trim() : '';
+  extractedData.email = emailMatch ? emailMatch[2].trim() : '';
+
+  return extractedData;
 }
 
 

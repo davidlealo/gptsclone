@@ -55,6 +55,9 @@ export function renderPromptForm(container) {
       console.error('Error:', error.message);
       appendMessage(chatContainer, 'Error', 'No se pudo obtener una respuesta del modelo.');
     }
+
+    // Limpiar el input del prompt
+  promptInput.value = ''; // <-- Añadir esta línea para limpiar el input
   });
 
   // Manejar "Usar esta propuesta"
