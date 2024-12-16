@@ -36,7 +36,7 @@ app.post('/api/mistral', async (req, res) => {
 
     res.json({ response: response.data.choices[0].message.content });
   } catch (error) {
-    console.error('Error al llamar a la API de Mistral:', error.message);
+    console.error('Error al llamar a la API de Mistral:', error.response?.data || error.message);
     res.status(500).json({ error: 'Error al consultar Mistral' });
   }
 });
