@@ -26,11 +26,13 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
    ```bash
    git clone https://github.com/tu-usuario/tu-repositorio.git
    cd tu-repositorio
+    ```
 
 2. Instala las dependencias con pnpm:
 
   ```bash
    pnpm install
+    ```
 
 
 ## **Configuración del Archivo .env**
@@ -40,6 +42,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
    ```bash
    cd backend
    touch .env
+    ```
 
 
 2. Instala las dependencias con pnpm:
@@ -47,6 +50,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
   ```bash
    MISTRAL_API_KEY=tu_clave_api_aqui
    PORT=3000
+    ```
 
 - Reemplaza tu_clave_api_aqui con la clave de la API del modelo que estés utilizando.
 
@@ -69,4 +73,4 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
   │   └── package.json    # Dependencias del frontend
   │
   └── pnpm-workspace.yaml # Configuración de pnpm workspace
-
+    ```
