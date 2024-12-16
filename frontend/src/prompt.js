@@ -6,7 +6,7 @@ export function renderPromptForm(container) {
         <form id="prompt-form">
           <div class="mb-3">
             <label for="prompt-agent" class="form-label">Prompt</label>
-            <input type="text" class="form-control" id="prompt-agent" aria-describedby="prompt-agent">
+            <input type="text" class="form-control" id="prompt-agent" aria-describedby="prompt-agent" placeholder="Escribe tu prompt aquí">
           </div>
           <button type="submit" class="btn btn-primary">Consultar</button>
         </form>
@@ -20,11 +20,13 @@ export function renderPromptForm(container) {
     e.preventDefault();
     const prompt = container.querySelector('#prompt-agent').value;
     const responseElement = container.querySelector('#response');
+
+    // Mensaje de carga
     responseElement.innerText = 'Cargando...';
 
     try {
-      // Enviar solicitud al backend
-      const response = await fetch('http://localhost:3000/api/gpt', {
+      // Solicitud al backend en la ruta correcta
+      const response = await fetch('http://localhost:3000/api/mistral', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,14 +34,16 @@ export function renderPromptForm(container) {
         body: JSON.stringify({ prompt }),
       });
 
+      // Manejo de errores
       if (!response.ok) {
-        throw new Error('Error en la solicitud');
+        throw new Error('Error en la solicitud al servidor');
       }
 
+      // Mostrar la respuesta
       const data = await response.json();
       responseElement.innerText = `Respuesta: ${data.response}`;
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error.message);
       responseElement.innerText = 'Error al obtener la respuesta. Inténtalo de nuevo.';
     }
   });
