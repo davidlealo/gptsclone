@@ -2,66 +2,87 @@ export function renderPromptForm(container) {
   container.innerHTML = `
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Consulta con Prompt</h5>
+        <h5 class="card-title">Conversación con el Modelo</h5>
+        <div id="chat-container" class="mb-3" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background-color: #f8f9fa;"></div>
         <form id="prompt-form">
           <div class="mb-3">
             <label for="prompt-agent" class="form-label">Prompt</label>
-            <input type="text" class="form-control" id="prompt-agent" aria-describedby="prompt-agent" placeholder="Escribe tu prompt aquí">
+            <input type="text" class="form-control" id="prompt-agent" placeholder="Escribe tu mensaje aquí">
           </div>
-          <button type="submit" class="btn btn-primary">Consultar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
-        <p id="response" class="mt-3"></p>
+        <button id="fill-form-btn" class="btn btn-success mt-3" style="display: none;">Usar esta propuesta para completar el formulario</button>
       </div>
     </div>
   `;
 
-  // Manejador de eventos para el formulario
+  const chatContainer = container.querySelector('#chat-container');
+  const fillFormButton = container.querySelector('#fill-form-btn');
+  let currentFormData = null;
+
+  // Manejar envío del prompt
   container.querySelector('#prompt-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const prompt = container.querySelector('#prompt-agent').value;
-    const responseElement = container.querySelector('#response');
 
-    // Mensaje de carga
-    responseElement.innerText = 'Cargando...';
+    const prompt = container.querySelector('#prompt-agent').value;
+
+    if (!prompt.trim()) return;
+
+    appendMessage(chatContainer, 'Tú', prompt);
 
     try {
-      // Solicitud al backend en la ruta correcta
       const response = await fetch('http://localhost:3000/api/mistral', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
 
-      // Manejo de errores
-      if (!response.ok) {
-        throw new Error('Error en la solicitud al servidor');
-      }
+      if (!response.ok) throw new Error('Error en la solicitud al servidor.');
 
-      // Mostrar la respuesta
       const data = await response.json();
+      const modelResponse = data.response;
+      currentFormData = data.formData;
 
-      responseElement.innerText = 'Datos extraídos correctamente. Rellenando formulario...';
+      appendMessage(chatContainer, 'Modelo', modelResponse);
 
-      // Rellenar automáticamente los campos del formulario
-      rellenarFormulario(data.response);
+      // Mostrar botón si hay datos sugeridos
+      if (Object.values(currentFormData).some((val) => val)) {
+        fillFormButton.style.display = 'block';
+      } else {
+        fillFormButton.style.display = 'none';
+      }
     } catch (error) {
       console.error('Error:', error.message);
-      responseElement.innerText = 'Error al obtener la respuesta. Inténtalo de nuevo.';
+      appendMessage(chatContainer, 'Error', 'No se pudo obtener una respuesta del modelo.');
     }
   });
+
+  // Manejar "Usar esta propuesta"
+  fillFormButton.addEventListener('click', () => {
+    rellenarFormulario(currentFormData);
+    appendMessage(chatContainer, 'Sistema', 'Formulario completado con los datos propuestos.');
+    fillFormButton.style.display = 'none';
+  });
+}
+
+// Función para agregar un mensaje al chat
+function appendMessage(container, sender, message) {
+  const messageElement = document.createElement('div');
+  messageElement.style.marginBottom = '10px';
+  messageElement.innerHTML = `
+    <strong>${sender}:</strong> <span>${message}</span>
+  `;
+  container.appendChild(messageElement);
+  container.scrollTop = container.scrollHeight; // Auto-scroll
 }
 
 // Función para rellenar el formulario automáticamente
 function rellenarFormulario(data) {
-  // Busca los campos del formulario por sus IDs
   const nombreInput = document.querySelector('#nombre');
   const projectInput = document.querySelector('#project');
   const descriptionInput = document.querySelector('#description');
   const emailInput = document.querySelector('#exampleInputEmail1');
 
-  // Rellena los campos si los datos están disponibles
   if (data.nombre) nombreInput.value = data.nombre;
   if (data.project) projectInput.value = data.project;
   if (data.description) descriptionInput.value = data.description;

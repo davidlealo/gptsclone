@@ -21,10 +21,11 @@ app.post('/api/mistral', async (req, res) => {
   const { prompt } = req.body;
 
   try {
-    const response = await axios.post(
+    // Llamada simulada a la API de Mistral
+    const modelResponse = await axios.post(
       MISTRAL_ENDPOINT,
       {
-        model: 'mistral-tiny', // Ajusta el modelo según acceso
+        model: 'mistral-tiny',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
       },
@@ -36,20 +37,30 @@ app.post('/api/mistral', async (req, res) => {
       }
     );
 
-    // Simular extracción de datos para rellenar formulario
-    const extractedData = {
-      nombre: prompt.includes('nombre') ? 'John Doe' : '',
-      project: prompt.includes('proyecto') ? 'Proyecto AI' : '',
-      description: prompt.includes('descripción') ? 'Descripción automática del proyecto' : '',
-      email: prompt.includes('correo') ? 'john.doe@example.com' : ''
-    };
+    // Simulación de una respuesta adicional con datos sugeridos
+    const content = modelResponse.data.choices[0].message.content;
+    const extractedData = extractFormDataFromPrompt(prompt); // Simular extracción de datos
 
-    res.json({ response: extractedData });
+    res.json({
+      response: content,
+      formData: extractedData, // Datos sugeridos
+    });
   } catch (error) {
-    console.error('Error al llamar a la API de Mistral:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Error al consultar Mistral' });
+    console.error('Error al consultar el modelo:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+// Función de extracción de datos del prompt
+function extractFormDataFromPrompt(prompt) {
+  return {
+    nombre: prompt.includes('nombre') ? 'John Doe' : '',
+    project: prompt.includes('proyecto') ? 'Proyecto AI' : '',
+    description: prompt.includes('descripción') ? 'Descripción automática' : '',
+    email: prompt.includes('correo') ? 'john.doe@example.com' : '',
+  };
+}
+
 
 // Ruta para guardar datos en un archivo JSON
 app.post('/api/save', (req, res) => {

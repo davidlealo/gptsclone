@@ -101,6 +101,23 @@ button:hover {
   border: 1px solid #007bff;
 }
 
+#chat-container {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#chat-container div {
+  padding: 5px 10px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+#chat-container strong {
+  color: #007bff;
+}
+
+
 /* Adaptabilidad */
 @media (max-width: 768px) {
   .container {
